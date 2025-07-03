@@ -1,22 +1,18 @@
 package com.complaint.backend.dtos;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
-import com.complaint.backend.entities.Comment;
 import com.complaint.backend.entities.User;
 
 public class PostDTO {
 	 private Long postId;  
 	 
 	 private Long userId;
-	  private String UserName;
+	  private String userName;
 	  private String content;
 	  private int likes;
 	  private String imageUrl;
 	  private LocalDateTime createdAt;
 	  private User user;
-	  private List<Comment> comments;
 	  public Long getPostId() {
 		  return postId;
 	  }
@@ -24,10 +20,10 @@ public class PostDTO {
 		  this.postId = postId;
 	  }
 	  public String getUserName() {
-		  return UserName;
+		  return userName;
 	  }
 	  public void setUserName(String userName) {
-		  UserName = userName;
+		 this.userName = userName;
 	  }
 	  public String getContent() {
 		  return content;
@@ -59,12 +55,7 @@ public class PostDTO {
 	  public void setUser(User user) {
 		  this.user = user;
 	  }
-	  public List<Comment> getComments() {
-		  return comments;
-	  }
-	  public void setComments(List<Comment> comments) {
-		  this.comments = comments;
-	  }
+	 
 	  public Long getUserId() {
 		  return userId;
 	  }

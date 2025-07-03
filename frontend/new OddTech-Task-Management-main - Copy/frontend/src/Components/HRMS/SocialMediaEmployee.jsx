@@ -58,6 +58,8 @@ const EmployeePortal = () => {
 
     fetchNotes(); // Fetch notes on component mount
     fetchIssues(); // Fetch issues on component mount
+    fetchPosts(); // Fetch posts on component mount
+
   }, []);
 
   const handleAddNote = async (e) => {
@@ -185,6 +187,129 @@ const EmployeePortal = () => {
       console.error("Error fetching issues:", error);
     }
   };
+
+
+
+  const handleAddPost = async () => {
+    if (newPost.trim() === '' && !selectedImage) return;
+
+    const formData = new FormData();
+    formData.append('content', newPost);
+    formData.append('author', userRole === 'admin' ? 'Admin' : 'Employee');
+    formData.append('image', selectedImage); // optional image
+
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await fetch('http://localhost:8080/api/post/createpost', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData, // FormData sends text + file together
+      });
+
+      if (!response.ok) throw new Error('Post upload failed');
+
+      const data = await response.json();
+
+      const post = {
+        id: data.id || data.postId, // Ensure id is set correctly
+        content: data.content,
+        author: data.userName,
+        likes: data.likes,
+        timestamp: 'Just now',
+        imageUrl: data.imageUrl,
+        comments: []
+      };
+      setPosts(prevPosts => [post, ...(prevPosts || [])]);
+      setNewPost('');
+      setSelectedImage(null);
+      setImagePreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  };
+
+  const fetchPosts = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await fetch('http://localhost:8080/api/post/allpostbydesc', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+
+      const data = await response.json();
+
+      const mappedPosts = Array.isArray(data)
+        ? data.map(post => ({
+          id: post.id || post.postId, // Ensure id is set correctly
+          content: post.content,
+          author: post.userName,
+          likes: post.likes || 0,
+          timestamp: post.createdAt || 'Just now',
+          imageUrl: post.imageUrl,
+          comments: post.comments || []
+        }))
+        : [];
+
+      setPosts(mappedPosts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      setPosts([]); // fallback
+    }
+  };
+
+
+
+  const likePost = async (postId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(`http://localhost:8080/api/post/like/${postId}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(errorData || "Failed to like post");
+      }
+
+      const updatedPost = await response.json();
+
+      setPosts(prev =>
+        prev.map(p =>
+          p.id === updatedPost.postId
+            ? {
+              ...p,
+              likes: updatedPost.likes,
+            }
+            : p
+        )
+      );
+
+    } catch (err) {
+      alert(err.message || "Already liked this post");
+      console.error("Like error:", err);
+    }
+  };
+
+
+
+
+
 
 
   const handleLike = (postId) => {
@@ -354,7 +479,7 @@ const EmployeePortal = () => {
                         {post.imageUrl && (
                           <div className="border-t border-b border-gray-200">
                             <img
-                              src={post.imageUrl}
+                              src={`http://localhost:8080${post.imageUrl}`}
                               alt="Post"
                               className="w-full h-64 md:h-96 object-cover"
                             />
@@ -366,7 +491,7 @@ const EmployeePortal = () => {
                           <div className="flex items-center justify-between">
                             <button
                               className="flex items-center text-gray-500 hover:text-green-600 transition"
-                              onClick={() => handleLike(post.id)}
+                              onClick={() => likePost(post.id)}
                             >
                               <motion.span
                                 className="mr-1"

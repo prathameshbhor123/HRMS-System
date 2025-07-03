@@ -45,6 +45,10 @@ public class WebSecurityConfiguration {
                         .requestMatchers("/api/employee/**").hasAuthority(UserRole.EMPLOYEE.name())
                         .requestMatchers("/api/note/**").hasAnyAuthority(UserRole.ADMIN.name(), UserRole.EMPLOYEE.name())
                         .requestMatchers("/api/issue/**").hasAnyAuthority(UserRole.ADMIN.name(), UserRole.EMPLOYEE.name())
+                        .requestMatchers("/api/post/**").hasAnyAuthority(UserRole.ADMIN.name(),UserRole.EMPLOYEE.name())
+                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/api/postcomment/**").hasAnyAuthority(UserRole.ADMIN.name(),UserRole.EMPLOYEE.name())
+                        
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

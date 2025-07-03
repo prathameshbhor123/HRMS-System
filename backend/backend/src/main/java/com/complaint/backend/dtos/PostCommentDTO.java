@@ -10,7 +10,7 @@ public class PostCommentDTO {
 	  private LocalDateTime createdAt;
 	  private Long postId;
 	  private Long userId;
-	  private Long userName;
+	  private String userName;
 	  
 	  
 	  public Long getCommentId() {
@@ -43,10 +43,10 @@ public class PostCommentDTO {
 	  public void setUserId(Long userId) {
 		  this.userId = userId;
 	  }
-	  public Long getUserName() {
+	  public String getUserName() {
 		  return userName;
 	  }
-	  public void setUserName(Long userName) {
+	  public void setUserName(String userName) {
 		  this.userName = userName;
 	  }
 	  

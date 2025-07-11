@@ -91,12 +91,14 @@ const Navbar = () => {
     { name: 'Dashboard', path: '/admindashboard' },
     { name: 'Assign Task', path: '/posttask' },
     { name: 'HRMS', path: '/hrmsadmin' },
-    { name: 'Register', path: '/signup' },
+    { name: 'Inventory Management', path: '/inventorymanagement' },
+    { name: 'Register', path: '/signup' }
   ];
 
   const employeeLinks = [
     { name: 'Dashboard', path: '/employeedashboard' },
-    { name: 'HRMS', path: '/hrmsemployee' }
+    { name: 'HRMS', path: '/hrmsemployee' },
+    { name: 'Inventory Management', path: '/inventoryemployee' }
   ];
 
   const renderLinks = () => {

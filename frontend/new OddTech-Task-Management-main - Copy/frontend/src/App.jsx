@@ -24,6 +24,8 @@ import HRMSEmployeePage from './Pages/HRMSPages/HRMSEmployeePage'
 import OAuthRedirectPage from './Pages/AuthPages/OAuthRedirectPage'
 import SocialMedia from './Components/HRMS/SocialMedia'
 import SocialMediaEmployee from './Components/HRMS/SocialMediaEmployee'
+import InventoryAdminPage from './Pages/InventoryManagementPages/InventoryAdminPage'
+import InventoryEmployeePage from './Pages/InventoryManagementPages/InventoryEmployeePage'
 function App() {
  
 return (
@@ -64,6 +66,10 @@ return (
         <Route
           path="/viewtaskdetails/:id"
           element={<ProtectedRoute element={ViewTaskDetailsPage} allowedRoles={['ADMIN']} />}
+        />
+        <Route
+          path="/inventorymanagement"
+          element={<ProtectedRoute element={InventoryAdminPage} allowedRoles={['ADMIN']} />}
         />
 
         {/* <Route
@@ -108,6 +114,13 @@ return (
         path="/socialmediaemployee"
         element={<ProtectedRoute element={SocialMediaEmployee} allowedRoles={['EMPLOYEE']}/>}
         />
+
+        <Route
+        path="/inventoryemployee"
+        element={<ProtectedRoute element={InventoryEmployeePage} allowedRoles={['EMPLOYEE']}/>}
+        />
+
+                  
       </Routes>
     </>
   )

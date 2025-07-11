@@ -38,7 +38,8 @@
 //     GridView as GridViewIcon,
 //     ViewList as ViewListIcon,
 //     FilterAlt as FilterAltIcon,
-//     Clear as ClearIcon
+//     Clear as ClearIcon,
+//     Search as SearchIcon
 // } from '@mui/icons-material';
 // import MuiAlert from '@mui/material/Alert';
 // import { motion, AnimatePresence } from 'framer-motion';
@@ -137,7 +138,7 @@
 //                         }`}>
 //                         {task.title}
 //                     </h2>
-//                     <p className="text-gray-700 mb-3">{task.description}</p>
+//                     <p className="text-gray-700 mb-3 h-24 overflow-hidden">{task.description}</p>
 
 //                     <div className="border-t border-gray-200 my-2"></div>
 
@@ -222,7 +223,7 @@
 //                                     </span>
 //                                 </TableCell>
 //                                 <TableCell>
-//                                     <p className="text-gray-700 line-clamp-1">{task.description}</p>
+//                                     <p className="text-gray-700 line-clamp-1 w-80">{task.description}</p>
 //                                 </TableCell>
 //                                 <TableCell>{formatDate(task.startDate)}</TableCell>
 //                                 <TableCell>
@@ -266,7 +267,7 @@
 // const EmployeeDashboard = () => {
 //     const navigate = useNavigate();
 //     const [tasks, setTasks] = useState([]);
-//     const [allTasks, setAllTasks] = useState([]); // Store all tasks for filtering
+//     const [allTasks, setAllTasks] = useState([]);
 //     const [todaysTasks, setTodaysTasks] = useState([]);
 //     const [loading, setLoading] = useState(true);
 //     const [anchorEl, setAnchorEl] = useState(null);
@@ -282,6 +283,7 @@
 //     const [viewMode, setViewMode] = useState(() => {
 //         return localStorage.getItem('viewMode') || 'grid';
 //     });
+//     const [searchQuery, setSearchQuery] = useState('');
 
 //     // Date range filter states
 //     const [startDateRange, setStartDateRange] = useState({
@@ -335,10 +337,9 @@
 //                 return 1;
 //             });
 
-//             setAllTasks(sortedTasks); // Store all tasks
-//             setTasks(sortedTasks); // Initially display all tasks
+//             setAllTasks(sortedTasks);
+//             setTasks(sortedTasks);
 
-//             // Check for new tasks assigned today
 //             const todayAssigned = sortedTasks.filter(task => isToday(task.startDate));
 //             setTodaysTasks(todayAssigned);
 
@@ -347,7 +348,6 @@
 
 //             const newTasks = todayAssigned.filter(task => !shownTaskIds.includes(task.id));
 
-//             // Update unseen notifications
 //             const unseenKey = `unseenNotifications_${userId}`;
 //             const unseenIds = JSON.parse(localStorage.getItem(unseenKey)) || [];
 
@@ -423,7 +423,6 @@
 //     const removeNotification = (taskId) => {
 //         setUnseenNotifications(prev => prev.filter(task => task.id !== taskId));
 
-//         // Update localStorage
 //         const unseenKey = `unseenNotifications_${userId}`;
 //         const unseenIds = JSON.parse(localStorage.getItem(unseenKey)) || [];
 //         localStorage.setItem(unseenKey, JSON.stringify(unseenIds.filter(id => id !== taskId)));
@@ -432,7 +431,6 @@
 //     const clearAllNotifications = () => {
 //         setUnseenNotifications([]);
 
-//         // Update localStorage
 //         const unseenKey = `unseenNotifications_${userId}`;
 //         localStorage.setItem(unseenKey, JSON.stringify([]));
 //         handleNotificationClose();
@@ -448,9 +446,23 @@
 //         navigate(`/viewemployeetaskdetails/${taskId}`);
 //     };
 
-//     // Apply date range filters
+//     const handleSearch = (query) => {
+//         setSearchQuery(query);
+//     };
+
 //     const applyFilters = () => {
 //         let filteredTasks = [...allTasks];
+
+//         // Search filter
+//         if (searchQuery) {
+//             const query = searchQuery.toLowerCase();
+//             filteredTasks = filteredTasks.filter(task =>
+//                 task.title.toLowerCase().includes(query) ||
+//                 task.description.toLowerCase().includes(query) ||
+//                 task.taskStatus.toLowerCase().includes(query) ||
+//                 task.priority.toLowerCase().includes(query)
+//             );
+//         }
 
 //         // Start date range filter
 //         if (startDateRange.startDate && startDateRange.endDate) {
@@ -479,7 +491,6 @@
 //         setTasks(filteredTasks);
 //     };
 
-//     // Format date range for display
 //     const formatRangeDisplay = (startDate, endDate) => {
 //         if (!startDate || !endDate) return 'Select date range';
 //         const format = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
@@ -487,21 +498,19 @@
 //         return `${format(startDate)} - ${format(endDate)}`;
 //     };
 
-//     // Clear all filters
 //     const handleClearFilters = () => {
 //         setStartDateRange({ startDate: null, endDate: null, key: 'selection' });
 //         setDueDateRange({ startDate: null, endDate: null, key: 'selection' });
+//         setSearchQuery('');
 //         setTasks(allTasks);
 //     };
 
 //     useEffect(() => {
 //         fetchTasks();
 
-//         // Load any existing unseen notifications
 //         const unseenKey = `unseenNotifications_${userId}`;
 //         const storedUnseen = JSON.parse(localStorage.getItem(unseenKey)) || [];
 //         if (storedUnseen.length > 0) {
-//             // We'll populate the actual task data when fetchTasks runs
 //             setUnseenNotifications(storedUnseen.map(id => ({ id })));
 //         }
 //     }, [userId]);
@@ -510,7 +519,7 @@
 //         if (allTasks.length > 0) {
 //             applyFilters();
 //         }
-//     }, [startDateRange, dueDateRange, allTasks]);
+//     }, [startDateRange, dueDateRange, allTasks, searchQuery]);
 
 //     if (loading) {
 //         return (
@@ -520,7 +529,6 @@
 //         );
 //     }
 
-//     // Group tasks by normalized startDate string for grid view
 //     const groupedTasks = tasks.reduce((groups, task) => {
 //         const startDateKey = normalizeDateStr(task.startDate);
 //         if (!groups[startDateKey]) {
@@ -530,26 +538,38 @@
 //         return groups;
 //     }, {});
 
-//     // Sort groups by date ascending
 //     const sortedGroupKeys = Object.keys(groupedTasks).sort((a, b) => new Date(a) - new Date(b));
 
 //     return (
-//         <div className="bg-gray-50 min-h-screen p-4 md:p-6">
-//             <div className="max-w-7xl mx-auto mt-20">
+//         <div className="bg-gradient-to-tr from-blue-50 to-blue-100 min-h-screen p-4 md:p-6">
+//             <div className="max-w-7xl mx-auto mt-20 bg-gradient-to-tr from-blue-50 to-blue-100">
 //                 <div className="flex justify-between items-center mb-6">
 //                     <h1 className="text-2xl font-bold text-gray-800">Your Tasks</h1>
-//                     {/* Date Range Filters */}
+
+//                     {/* Search and Filter Section */}
 //                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+//                         {/* Search Bar */}
+//                         <div className="relative flex-grow max-w-md">
+//                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                                 <SearchIcon className="h-5 w-5 text-gray-400" />
+//                             </div>
+//                             <input
+//                                 type="text"
+//                                 placeholder="Search tasks..."
+//                                 value={searchQuery}
+//                                 onChange={(e) => handleSearch(e.target.value)}
+//                                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-700"
+//                             />
+//                         </div>
+
 //                         <div className="flex flex-wrap items-center gap-4 justify-between">
-//                             {/* Start Date Filter */}
 //                             <div className="relative">
-//                                 <Button
-//                                     className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-black focus:border-black focus:text-black"
+//                                 <button
+//                                     className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
 //                                     onClick={() => setShowStartDatePicker(!showStartDatePicker)}
 //                                 >
-//                                     Start: {formatRangeDisplay(startDateRange.startDate, startDateRange.endDate)}
-//                                 </Button>
-
+//                                     Start Date: {formatRangeDisplay(startDateRange.startDate, startDateRange.endDate)}
+//                                 </button>
 
 //                                 {showStartDatePicker && (
 //                                     <div className="absolute z-10 mt-2 bg-white shadow-lg rounded-md left-0 max-w-[90vw] overflow-x-auto">
@@ -564,14 +584,13 @@
 //                                 )}
 //                             </div>
 
-//                             {/* Due Date Filter */}
 //                             <div className="relative">
-//                                 <Button
+//                                 <button
 //                                     className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
 //                                     onClick={() => setShowDueDatePicker(!showDueDatePicker)}
 //                                 >
-//                                     Due: {formatRangeDisplay(dueDateRange.startDate, dueDateRange.endDate)}
-//                                 </Button>
+//                                     Due Date: {formatRangeDisplay(dueDateRange.startDate, dueDateRange.endDate)}
+//                                 </button>
 
 //                                 {showDueDatePicker && (
 //                                     <div className="absolute z-10 mt-2 bg-white shadow-lg rounded-md left-0 max-w-[90vw] overflow-x-auto">
@@ -586,19 +605,15 @@
 //                                 )}
 //                             </div>
 
-//                             {/* Clear Filters Button */}
-//                             {(startDateRange.startDate || dueDateRange.startDate) && (
-//                                 <Button
-//                                     variant="outlined"
-//                                     color="error"
-//                                     startIcon={<ClearIcon />}
-//                                     onClick={handleClearFilters}
-//                                 >
-//                                     Clear Filters
-//                                 </Button>
-//                             )}
+//                             <button
+//                                 onClick={handleClearFilters}
+//                                 className="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded"
+//                             >
+//                                 Clear Filters
+//                             </button>
 //                         </div>
 //                     </div>
+
 
 //                     <div className="flex items-center">
 //                         <Tooltip title={viewMode === 'grid' ? 'Switch to List View' : 'Switch to Grid View'}>
@@ -635,7 +650,6 @@
 //                         </Tooltip>
 //                     </div>
 //                 </div>
-
 
 //                 {/* Notification Menu */}
 //                 <Menu
@@ -721,15 +735,19 @@
 
 //                 {tasks.length === 0 ? (
 //                     <div className="text-center py-10">
-//                         <p className="text-gray-500">No tasks found matching your filters</p>
-//                         {(startDateRange.startDate || dueDateRange.startDate) && (
+//                         <p className="text-gray-500">
+//                             {searchQuery
+//                                 ? "No tasks found matching your search criteria"
+//                                 : "No tasks found matching your filters"}
+//                         </p>
+//                         {(startDateRange.startDate || dueDateRange.startDate || searchQuery) && (
 //                             <Button
 //                                 variant="text"
 //                                 color="primary"
 //                                 onClick={handleClearFilters}
 //                                 className="mt-2"
 //                             >
-//                                 Clear filters
+//                                 Clear all filters
 //                             </Button>
 //                         )}
 //                     </div>
@@ -737,12 +755,10 @@
 //                     <>
 //                         {sortedGroupKeys.map((dateKey) => (
 //                             <div key={dateKey} className="mb-8">
-//                                 {/* Date Header */}
 //                                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
 //                                     Tasks Starting: {formatDate(dateKey)}
 //                                 </h2>
 
-//                                 {/* Row for this date's tasks */}
 //                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 //                                     {groupedTasks[dateKey].map((task) => (
 //                                         <TaskCard
@@ -975,6 +991,10 @@ const TaskCard = ({ task, onView, onEdit }) => {
                             <span className="text-gray-600">Status:</span>
                             <StatusChip status={task.taskStatus} />
                         </div>
+                        <div className="flex items-center">
+                            <span className="text-gray-600 mr-2">Company:</span>
+                            <span className="font-semibold">{task.companyName}</span>
+                        </div>
                     </div>
 
                     <div className="flex justify-end space-x-2 mt-3">
@@ -1010,6 +1030,7 @@ const TaskTable = ({ tasks, onView, onEdit }) => {
                     <TableRow className="bg-gray-100">
                         <TableCell>Title</TableCell>
                         <TableCell>Description</TableCell>
+                        <TableCell>Company</TableCell>
                         <TableCell>Start Date</TableCell>
                         <TableCell>Due Date</TableCell>
                         <TableCell>Priority</TableCell>
@@ -1037,6 +1058,11 @@ const TaskTable = ({ tasks, onView, onEdit }) => {
                                 <TableCell>
                                     <p className="text-gray-700 line-clamp-1 w-80">{task.description}</p>
                                 </TableCell>
+
+                                <TableCell>
+                                    <span className="text-gray-700">{task.companyName}</span>
+                                </TableCell>
+
                                 <TableCell>{formatDate(task.startDate)}</TableCell>
                                 <TableCell>
                                     <span className={`${taskIsOverdue ? 'text-red-600' : taskIsDueToday ? 'text-yellow-600' : ''}`}>
@@ -1272,7 +1298,8 @@ const EmployeeDashboard = () => {
                 task.title.toLowerCase().includes(query) ||
                 task.description.toLowerCase().includes(query) ||
                 task.taskStatus.toLowerCase().includes(query) ||
-                task.priority.toLowerCase().includes(query)
+                task.priority.toLowerCase().includes(query) ||
+                task.companyName.toLowerCase().includes(query)
             );
         }
 
@@ -1632,6 +1659,4 @@ const EmployeeDashboard = () => {
     );
 };
 
-export default EmployeeDashboard;
-
-
+export default EmployeeDashboard; 

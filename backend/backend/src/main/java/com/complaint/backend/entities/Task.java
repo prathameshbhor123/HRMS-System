@@ -26,6 +26,7 @@ public class Task {
     private Date startDate; // <-- Will be auto-filled
     private String priority;
     private String description;
+    private String companyName;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -48,6 +49,7 @@ public class Task {
         taskDTO.setStartDate(startDate);
         taskDTO.setPriority(priority);
         taskDTO.setDescription(description);
+        taskDTO.setCompanyName(companyName);
         return taskDTO;
     }
 }

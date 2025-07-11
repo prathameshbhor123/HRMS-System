@@ -23,9 +23,12 @@ public class User implements UserDetails {
     private Long id;
     private String name;
     private String email;
+    private String role;
+    private String department;
     private String password;
     private UserRole userRole;
     private String faceImageName;
+    
 
     public String getFaceEmbedding() {
         return faceEmbedding;
@@ -83,6 +86,8 @@ public class User implements UserDetails {
         userDTO.setName(name);
         userDTO.setEmail(email);
         userDTO.setUserRole(userRole);
+        userDTO.setRole(role);
+        userDTO.setDepartment(department);
 
         return userDTO;
     }
@@ -123,6 +128,24 @@ return true;
 @Override
 public boolean isEnabled() {
 return true;
+}
+
+
+
+public String getRole() {
+	return role;
+}
+
+public void setRole(String role) {
+	this.role = role;
+}
+
+public String getDepartment() {
+	return department;
+}
+
+public void setDepartment(String department) {
+	this.department = department;
 }
 
 public Long getId() {

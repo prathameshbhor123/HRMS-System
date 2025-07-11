@@ -10,4 +10,6 @@ public class SignupRequest {
     private String faceImageName;
     private String faceEmbedding;
     private String faceImageBase64;
+    private String role;
+    private String department;
 }

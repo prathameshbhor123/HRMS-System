@@ -19,6 +19,7 @@ public class TaskDTO {
     private Long employeeId;
     private String employeeName;
     private String description;
+    private String companyName;
 
 
 

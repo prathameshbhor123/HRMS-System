@@ -207,4 +207,10 @@ public class EmployeeServieImpl implements EmployeeService {
 
         return dto;
     }
+
+	@Override
+	 public List<User> getAllEmployees() {
+        return userRepository.findAll();
+    }   
+
 }

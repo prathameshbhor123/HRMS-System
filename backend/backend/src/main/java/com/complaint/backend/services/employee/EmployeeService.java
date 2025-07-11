@@ -11,6 +11,7 @@ import com.complaint.backend.dtos.LeaveBalanceDTO;
 import com.complaint.backend.dtos.LeaveManagementDTO;
 import com.complaint.backend.dtos.TaskDTO;
 import com.complaint.backend.entities.LeaveManagement;
+import com.complaint.backend.entities.User;
 import com.complaint.backend.enums.LeaveApplicationStatus;
 import com.complaint.backend.repositories.LeaveBalanceRepository;
 import com.complaint.backend.repositories.LeaveManagementRepository;
@@ -45,7 +46,7 @@ public interface EmployeeService {
 
     public LeaveBalanceDTO getLeaveBalanceByUserId(Long userId);
 
-
+     public List <User> getAllEmployees();
 //	private LeaveManagementDTO toDTO(LeaveManagement entity) {
 //		LeaveManagementDTO dto = new LeaveManagementDTO();
 //		dto.setLeaveId(entity.getLeaveId());

@@ -54,6 +54,8 @@ public class AuthServiceImpl implements AuthService {
                 user.setUserRole(UserRole.EMPLOYEE);
                 user.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
                 user.setFaceEmbedding(signupRequest.getFaceEmbedding());
+                user.setRole(signupRequest.getRole());
+                user.setDepartment(signupRequest.getDepartment()); 
                 return userRepository.save(user).getUserDTO();
             }
 
@@ -77,6 +79,8 @@ public class AuthServiceImpl implements AuthService {
             user.setUserRole(UserRole.EMPLOYEE);
             user.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
             user.setFaceEmbedding(embeddingJson);
+            user.setRole(signupRequest.getRole());
+            user.setDepartment(signupRequest.getDepartment());
 
             return userRepository.save(user).getUserDTO();
         } catch (Exception e) {

@@ -70,6 +70,7 @@ public class AdminServiceImpl implements AdminService {
          task.setDueDate(taskDTO.getDueDate());
          task.setUser(optionalUser.get());
          task.setTaskStatus(TaskStatus.PENDING);
+         task.setCompanyName(taskDTO.getCompanyName());
          return taskRepository.save(task).getTaskDTO();
 
       }

@@ -14,6 +14,8 @@ private Long id;
 private String name;
 private String email;
 private String password;
+private String role;
+private String department;
 private String faceEmbedding;
     private MultipartFile faceImage;
     private UserRole userRole;
@@ -66,6 +68,31 @@ private String faceEmbedding;
     public Long getId() {
         return id;
     }
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getFaceEmbedding() {
+		return faceEmbedding;
+	}
+
+	public void setFaceEmbedding(String faceEmbedding) {
+		this.faceEmbedding = faceEmbedding;
+	}
+    
 
 
 }

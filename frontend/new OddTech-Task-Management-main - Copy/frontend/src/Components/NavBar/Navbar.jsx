@@ -89,6 +89,7 @@ const Navbar = () => {
 
   const adminLinks = [
     { name: 'Dashboard', path: '/admindashboard' },
+    { name: 'Apps', path: '/app' },
     { name: 'Assign Task', path: '/posttask' },
     { name: 'HRMS', path: '/hrmsadmin' },
     { name: 'Inventory Management', path: '/inventorymanagement' },
@@ -97,6 +98,7 @@ const Navbar = () => {
 
   const employeeLinks = [
     { name: 'Dashboard', path: '/employeedashboard' },
+    { name: 'Apps', path: '/employeeapps' },
     { name: 'HRMS', path: '/hrmsemployee' },
     { name: 'Inventory Management', path: '/inventoryemployee' }
   ];

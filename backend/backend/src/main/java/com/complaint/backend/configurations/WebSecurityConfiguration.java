@@ -50,7 +50,7 @@ public class WebSecurityConfiguration {
                         .requestMatchers("/api/postcomment/**").hasAnyAuthority(UserRole.ADMIN.name(),UserRole.EMPLOYEE.name())
                         .requestMatchers("/api/assets/**").permitAll()
                         .requestMatchers("/api/assignments/**").permitAll()
-                        .requestMatchers("/api/assignments/**/return").hasAnyAuthority(UserRole.ADMIN.name())
+                        .requestMatchers("/api/assignments/(\\d+)/return").hasAnyAuthority(UserRole.ADMIN.name())
 
                         .anyRequest().authenticated()
                 )

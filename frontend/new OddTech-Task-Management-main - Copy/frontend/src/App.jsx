@@ -26,23 +26,26 @@ import SocialMedia from './Components/HRMS/SocialMedia'
 import SocialMediaEmployee from './Components/HRMS/SocialMediaEmployee'
 import InventoryAdminPage from './Pages/InventoryManagementPages/InventoryAdminPage'
 import InventoryEmployeePage from './Pages/InventoryManagementPages/InventoryEmployeePage'
+import EmployeeDiaryPage from './Pages/Diary/EmployeeDiaryPage'
+import AppPage from './Pages/AppFolderPage/AppPage'
+import EmployeeAppsPage from './Pages/EmployeePages/EmployeeAppPage/EmployeeAppsPage'
 function App() {
- 
-return (
-      <>
+
+  return (
+    <>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/loginpage" element={<LoginPages />} />
-        <Route path="/signup" element={<SignupPage />} />
+        {/* <Route path="/signup" element={<SignupPage />} /> */}
         <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="/contactus" element={<ContactUsPage />} />
-        <Route path="/home" element={<HomePage/>} />
-        <Route path="/facelogin" element={<FaceLoginPage />} />   
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/facelogin" element={<FaceLoginPage />} />
         <Route path="/oauth2/redirect" element={<OAuthRedirectPage />} />
-        <Route path="/attendance" element={<AttendenceCapturePage />} /> 
+        <Route path="/attendance" element={<AttendenceCapturePage />} />
 
 
-      
+
 
 
 
@@ -50,6 +53,10 @@ return (
         <Route
           path="/admindashboard"
           element={<ProtectedRoute element={AdminDashboardPage} allowedRoles={['ADMIN']} />}
+        />
+        <Route
+          path="/signup"
+          element={<ProtectedRoute element={SignupPage} allowedRoles={['ADMIN']} />}
         />
         <Route
           path="/posttask"
@@ -72,19 +79,19 @@ return (
           element={<ProtectedRoute element={InventoryAdminPage} allowedRoles={['ADMIN']} />}
         />
 
-        {/* <Route
-          path="/attendance"
-          element={<ProtectedRoute element={AttendancePages} allowedRoles={['ADMIN']} />}
-        /> */}
         <Route
           path="/hrmsadmin"
           element={<ProtectedRoute element={HRMSAdminPage} allowedRoles={['ADMIN']} />}
-        /> 
+        />
 
-         <Route
+        <Route
           path="/socialmedia"
           element={<ProtectedRoute element={SocialMedia} allowedRoles={['ADMIN']} />}
-        /> 
+        />
+        <Route
+          path="/app"
+          element={<ProtectedRoute element={AppPage} allowedRoles={['ADMIN']} />}
+        />
 
 
 
@@ -99,54 +106,39 @@ return (
           element={<ProtectedRoute element={ViewEmployeeTaskDetailsPage} allowedRoles={['EMPLOYEE']} />}
         />
         <Route
-        path="/face"
-        element={<ProtectedRoute element={AttendenceCapturePage} allowedRoles={['EMPLOYEE']}/>}
+          path="/face"
+          element={<ProtectedRoute element={AttendenceCapturePage} allowedRoles={['EMPLOYEE']} />}
         />
 
         <Route
-        path="/hrmsemployee"
-        element={<ProtectedRoute element={HRMSEmployeePage} allowedRoles={['EMPLOYEE']}/>}
+          path="/hrmsemployee"
+          element={<ProtectedRoute element={HRMSEmployeePage} allowedRoles={['EMPLOYEE']} />}
         />
 
 
-        
-        <Route
-        path="/socialmediaemployee"
-        element={<ProtectedRoute element={SocialMediaEmployee} allowedRoles={['EMPLOYEE']}/>}
-        />
 
         <Route
-        path="/inventoryemployee"
-        element={<ProtectedRoute element={InventoryEmployeePage} allowedRoles={['EMPLOYEE']}/>}
+          path="/socialmediaemployee"
+          element={<ProtectedRoute element={SocialMediaEmployee} allowedRoles={['EMPLOYEE']} />}
         />
 
-                  
+        <Route
+          path="/inventoryemployee"
+          element={<ProtectedRoute element={InventoryEmployeePage} allowedRoles={['EMPLOYEE']} />}
+        />
+
+        <Route
+          path="/empdiary"
+          element={<ProtectedRoute element={EmployeeDiaryPage} allowedRoles={['EMPLOYEE']} />}
+        />
+        <Route
+          path="/employeeapps"
+          element={<ProtectedRoute element={EmployeeAppsPage} allowedRoles={['EMPLOYEE']} />}
+        />
+
       </Routes>
     </>
   )
 }
 
 export default App
-
-
-
-
-
-// import './App.css'
-// import LoginPage from './Pages/LoginPage'
-// import SignupPage from './Pages/SignupPage'
-
-// function App() {
- 
-// return (
-//     <>
-    
-//     <LoginPage/>
-//     <SignupPage/>
-   
-//     </>
-//   )
-// }{/*
-
-// export default App
-

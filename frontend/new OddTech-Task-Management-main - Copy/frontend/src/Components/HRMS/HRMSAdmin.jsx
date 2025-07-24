@@ -10,7 +10,7 @@ const HRMSAdmin = () => {
 
     const [leaveApplications, setLeaveApplications] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [currentUser] = useState({ name: 'Admin', role: 'admin' }); 
+    const [currentUser] = useState({ name: 'Admin', role: 'admin' });
     // Load data from localStorage on component mount
 
 
@@ -141,23 +141,6 @@ const HRMSAdmin = () => {
 
     return (
         <div className="min-h-screen bg-gray-100 mt-16">
-            {/* Header
-            <header className="bg-blue-600 text-white shadow-lg">
-                <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                    <motion.h1 className="text-2xl font-bold" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-                        HRMS - Manager Portal
-                    </motion.h1>
-                    <div className="flex items-center space-x-4">
-                        <div className="text-right">
-                            <p className="font-semibold">Admin User</p>
-                            <p className="text-sm text-blue-200">Manager • HR Department</p>
-                        </div>
-                        <div className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
-                            <span className="font-bold">A</span>
-                        </div>
-                    </div>
-                </div>
-            </header> */}
 
             <main className="container mx-auto px-4 py-6">
                 <nav className="mb-8 bg-white rounded-lg shadow p-2 overflow-x-auto">
@@ -182,7 +165,7 @@ const HRMSAdmin = () => {
                                 My Team
                             </button>
                         </li>
-                          <li>
+                        <li>
                             <button onClick={() => setActiveSection('socialmedia')} className={`px-4 py-2 rounded-md ${activeSection === 'socialmedia' ? 'bg-blue-100 text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-100'}`}>
                                 Social Media
                             </button>
@@ -195,19 +178,19 @@ const HRMSAdmin = () => {
 
                     {/* Social Media Section */}
 
-                   {activeSection === 'socialmedia' && (
-  <motion.section 
-    key="socialmedia" 
-    initial="hidden" 
-    animate="visible" 
-    exit="exit" 
-    variants={sectionVariants} 
-    className="bg-white rounded-lg shadow p-6"
-  >
-    <h2 className="text-xl font-bold mb-6 text-gray-800">Social Media</h2>
-    <SocialMedia currentUser={currentUser} />
-  </motion.section>
-)}
+                    {activeSection === 'socialmedia' && (
+                        <motion.section
+                            key="socialmedia"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                            variants={sectionVariants}
+                            className="bg-white rounded-lg shadow p-6"
+                        >
+                            <h2 className="text-xl font-bold mb-6 text-gray-800">Social Media</h2>
+                            <SocialMedia currentUser={currentUser} />
+                        </motion.section>
+                    )}
 
 
 
